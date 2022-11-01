@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ragdoll animation with p2.js</title>
+    <script src="p2.js"></script>
+    <script src="p2.renderer.js"></script>
+    <script src="constants.js"></script>
+    <script src="createRagdoll.js"></script>
+    <script src="keyframes.js"></script>
+    <script src="animationControls.js"></script>
+    <meta
+      name="description"
+      content="Simple ragdoll physics with saveable keyframes"
+    />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      html,
+      body {
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      #keyframe-slider {
+        position: absolute;
+        bottom: 50px;
+        width: 80%;
+        margin: 0 10%;
+      }
+      #controls {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="main.js"></script>
+    <div id="controls">
+      <button type="button" onclick="play()">Play</button>
+      <button type="button" onclick="addKeyframe()">Keyframe</button>
+      <button type="button" onclick="clearKeyframes()">Clear</button>
+    </div>
+    <input
+      id="keyframe-slider"
+      type="range"
+      min="0"
+      max="100"
+      value="0"
+      step="1"
+      oninput="keyframeSliderInput(this.value)"
+      list="tickmarks"
+    />
+    <datalist id="tickmarks">
+      <option value="0" />
+      <option value="10" />
+      <option value="20" />
+      <option value="30" />
+      <option value="40" />
+      <option value="50" />
+      <option value="60" />
+      <option value="70" />
+      <option value="80" />
+      <option value="90" />
+      <option value="100" />
+    </datalist>
+  </body>
+</html>
