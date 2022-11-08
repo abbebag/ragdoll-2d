@@ -10,6 +10,8 @@ TODO
 - [x] Figure out moving pelvis (constraints to feet, hands?)
 - [x] Save animation to json
 - [x] Timeline element, simple scrub only
+- [x] Fix side view limb distance
+- [x] Rotate body when dragging head
 - [ ] Timeline add keyframe at time
 - [ ] Timeline move with physics
 - [ ] Match keyframes to physics
