@@ -39,6 +39,8 @@ const createRagdoll = (p2, x, y, options = {}) => {
     lowerLegLength,
   } = ragdollDefaults
 
+  const limbDistance = isSideView ? shouldersDistance : 0.1
+
   // Head
   var head = new p2.Body({
     mass: 1,
@@ -73,7 +75,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var upperLeftArm = new p2.Body({
     mass: 1,
     position: [
-      x - upperArmLength / 2,
+      x + limbDistance/2 + upperArmLength / 2,
       upperBody.position[1] + upperBodyLength / 2,
     ],
   })
@@ -89,7 +91,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var upperRightArm = new p2.Body({
     mass: 1,
     position: [
-      x + upperArmLength / 2,
+      x - limbDistance/2 - upperArmLength / 2,
       upperBody.position[1] + upperBodyLength / 2,
     ],
   })
@@ -103,11 +105,11 @@ const createRagdoll = (p2, x, y, options = {}) => {
 
   // Shoulders
   var leftShoulder = new p2.RevoluteConstraint(upperBody, upperLeftArm, {
-    localPivotA: [0, upperBodyLength / 2],
+    localPivotA: [limbDistance/2, upperBodyLength / 2],
     localPivotB: [upperArmLength / 2, 0],
   })
   var rightShoulder = new p2.RevoluteConstraint(upperBody, upperRightArm, {
-    localPivotA: [0, upperBodyLength / 2],
+    localPivotA: [-limbDistance/2, upperBodyLength / 2],
     localPivotB: [-upperArmLength / 2, 0],
   })
   //leftShoulder.setLimits(-Math.PI / 3, Math.PI / 3)
@@ -117,7 +119,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var lowerLeftArm = new p2.Body({
     mass: 1,
     position: [
-      upperLeftArm.position[0] - lowerArmLength / 2 - upperArmLength / 2,
+      upperLeftArm.position[0] + lowerArmLength / 2 + upperArmLength / 2,
       upperLeftArm.position[1],
     ],
   })
@@ -133,7 +135,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var lowerRightArm = new p2.Body({
     mass: 1,
     position: [
-      upperRightArm.position[0] + lowerArmLength / 2 + upperArmLength / 2,
+      upperRightArm.position[0] - lowerArmLength / 2 - upperArmLength / 2,
       upperRightArm.position[1],
     ],
   })
@@ -186,7 +188,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var upperLeftLeg = new p2.Body({
     mass: 1,
     position: [
-      pelvis.position[0] + (isSideView ? shouldersDistance / 2 : 0),
+      pelvis.position[0] + limbDistance / 2,
       pelvis.position[1] - pelvisLength / 2 - upperLegLength / 2,
     ],
   })
@@ -202,7 +204,7 @@ const createRagdoll = (p2, x, y, options = {}) => {
   var upperRightLeg = new p2.Body({
     mass: 1,
     position: [
-      pelvis.position[0] - (isSideView ? shouldersDistance / 2 : 0),
+      pelvis.position[0] - limbDistance / 2,
       pelvis.position[1] - pelvisLength / 2 - upperLegLength / 2,
     ],
   })
@@ -217,11 +219,11 @@ const createRagdoll = (p2, x, y, options = {}) => {
   // Hip joints
   var leftHipJoint = new p2.RevoluteConstraint(upperLeftLeg, pelvis, {
     localPivotA: [0, upperLegLength / 2],
-    localPivotB: [isSideView ? shouldersDistance / 2 : 0, -pelvisLength / 2],
+    localPivotB: [limbDistance/2, -pelvisLength / 2],
   })
   var rightHipJoint = new p2.RevoluteConstraint(upperRightLeg, pelvis, {
     localPivotA: [0, upperLegLength / 2],
-    localPivotB: [isSideView ? -shouldersDistance / 2 : 0, -pelvisLength / 2],
+    localPivotB: [-limbDistance/2, -pelvisLength / 2],
   })
 
   if (!isSideView) {
@@ -328,6 +330,7 @@ const createRagdollConstraints = (p2, bodyParts, options = {}) => {
   } = ragdollDefaults
 
   const { isSideView } = options
+  const limbDistance = isSideView ? shouldersDistance : 0.1
 
   // Neck joint
   var neckJoint = new p2.RevoluteConstraint(head, upperBody, {
@@ -338,27 +341,27 @@ const createRagdollConstraints = (p2, bodyParts, options = {}) => {
 
   // Shoulder joints
   var leftShoulder = new p2.RevoluteConstraint(upperBody, upperLeftArm, {
-    localPivotA: [0, upperBodyLength / 2],
-    localPivotB: [upperArmLength / 2, 0],
+    localPivotA: [limbDistance/2, upperBodyLength / 2],
+    localPivotB: [-upperArmLength / 2, 0],
   })
   var rightShoulder = new p2.RevoluteConstraint(upperBody, upperRightArm, {
-    localPivotA: [0, upperBodyLength / 2],
-    localPivotB: [-upperArmLength / 2, 0],
+    localPivotA: [-limbDistance/2, upperBodyLength / 2],
+    localPivotB: [upperArmLength / 2, 0],
   })
   //leftShoulder.setLimits(-Math.PI / 3, Math.PI / 3)
   //rightShoulder.setLimits(-Math.PI / 3, Math.PI / 3)
 
   // Elbow joint
   var leftElbowJoint = new p2.RevoluteConstraint(lowerLeftArm, upperLeftArm, {
-    localPivotA: [lowerArmLength / 2, 0],
-    localPivotB: [-upperArmLength / 2, 0],
+    localPivotA: [-lowerArmLength / 2, 0],
+    localPivotB: [upperArmLength / 2, 0],
   })
   var rightElbowJoint = new p2.RevoluteConstraint(
     lowerRightArm,
     upperRightArm,
     {
-      localPivotA: [-lowerArmLength / 2, 0],
-      localPivotB: [upperArmLength / 2, 0],
+      localPivotA: [lowerArmLength / 2, 0],
+      localPivotB: [-upperArmLength / 2, 0],
     }
   )
   leftElbowJoint.setLimits(-Math.PI / 2, 0)
@@ -375,11 +378,11 @@ const createRagdollConstraints = (p2, bodyParts, options = {}) => {
   // Hip joints
   var leftHipJoint = new p2.RevoluteConstraint(upperLeftLeg, pelvis, {
     localPivotA: [0, upperLegLength / 2],
-    localPivotB: [isSideView ? shouldersDistance / 2 : 0, -pelvisLength / 2],
+    localPivotB: [limbDistance/2, -pelvisLength / 2],
   })
   var rightHipJoint = new p2.RevoluteConstraint(upperRightLeg, pelvis, {
     localPivotA: [0, upperLegLength / 2],
-    localPivotB: [isSideView ? -shouldersDistance / 2 : 0, -pelvisLength / 2],
+    localPivotB: [-limbDistance/2, -pelvisLength / 2],
   })
 
   if (!isSideView) {
