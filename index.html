@@ -43,9 +43,9 @@
   <body>
     <script src="main.js"></script>
     <div id="controls">
-      <button type="button" onclick="play()">Play</button>
-      <button type="button" onclick="addKeyframe()">Keyframe</button>
-      <button type="button" onclick="clearKeyframes()">Clear</button>
+      <button type="button" onclick="play(); this.blur();">Play</button>
+      <button type="button" onclick="addKeyframe(); this.blur();">Keyframe</button>
+      <button type="button" onclick="clearKeyframes(); this.blur();">Clear</button>
     </div>
     <input
       id="keyframe-slider"
